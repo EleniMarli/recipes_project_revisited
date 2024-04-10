@@ -7,6 +7,7 @@ class PagesController < ApplicationController
   end
 
   def profile
-
+    @user_recipes = Recipe.where(user: current_user)
+                          .order(name: :asc)
   end
 end
