@@ -12,5 +12,5 @@ Rails.application.routes.draw do
 
   get '/profile', to: 'pages#profile'
 
-  resources :recipes, only: %i[new create show]
+  resources :recipes, only: %i[new create show edit update]
 end
