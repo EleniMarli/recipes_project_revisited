@@ -1,0 +1,13 @@
+<h3> <%= @recipe.name %> (<%= @recipe.portions %> portions) </h3>
+
+<p> Preparation time: <%= @recipe.time_in_min %> minutes </p>
+<p> Difficulty: <%= @recipe.difficulty %> </p>
+<p> Rating:
+  <% if @recipe.rating == nil %>
+    <%= 'no users have rated it yet' %>
+  <% else %>
+    <%= @recipe.rating %> / 5
+  <% end %>
+</p>
+<p> Instructions: </p>
+<p><%= simple_format(@recipe.instructions) %></p>

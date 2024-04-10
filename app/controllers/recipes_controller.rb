@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  #before_action :set_recipe, only: %i[]
+  before_action :set_recipe, only: %i[show]
 
   # def index
   #   @recipes = Recipe.all
