@@ -3,5 +3,10 @@ class PagesController < ApplicationController
   skip_after_action :verify_authorized, only: [ :home ]
 
   def home
+    redirect_to :profile unless current_user.nil?
+  end
+
+  def profile
+
   end
 end
