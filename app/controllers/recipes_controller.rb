@@ -1,9 +1,9 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[create]
+  #before_action :set_recipe, only: %i[]
 
-  def index
-    @recipes = Recipe.all
-  end
+  # def index
+  #   @recipes = Recipe.all
+  # end
 
   def new
     @recipe = Recipe.new
@@ -16,7 +16,7 @@ class RecipesController < ApplicationController
     authorize(@recipe)
 
     if @recipe.save
-      redirect_to @recipe, notice: "Recipe saved succesfully"
+      redirect_to profile_path, notice: "Recipe saved succesfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -33,6 +33,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-
+    params.require(:recipe).permit(:name, :portions, :instructions, :time_in_min, :difficulty)
   end
 end
