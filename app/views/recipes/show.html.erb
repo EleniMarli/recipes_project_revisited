@@ -6,4 +6,6 @@
 <p> Instructions: </p>
 <p><%= simple_format(@recipe.instructions) %></p>
 
-<%= link_to 'Edit', edit_recipe_path(@recipe) %>
+<% if policy(@recipe).edit? %>
+  <%= link_to 'Edit', edit_recipe_path(@recipe) %>
+<% end %>
