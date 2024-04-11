@@ -1,4 +1,13 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-
 <h3>Welcome to Recipes project</h3>
+
+<h5>Here are all the recipes of our users:</h5>
+
+<ul>
+  <% @all_recipes.each do |recipe| %>
+    <li>
+      <%= link_to "#{recipe.name}", recipe_path(recipe) %>
+      <%= "| by #{recipe.user.name}" %>
+      <%= "| #{recipe.rating} / 5 stars" if !recipe.rating.nil?%>
+    </li>
+  <% end %>
+</ul>
