@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   # Pundit: allow-list approach
-  after_action :verify_authorized, except: :index, unless: :skip_pundit? # autjorization is verified EXCEPT on index
+  after_action :verify_authorized, except: :index, unless: :skip_pundit? # authorization is verified EXCEPT on index
   after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
 
   # Uncomment when you *really understand* Pundit!
@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_pundit?
-    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)/
+    # orogonally regexp was: /(^(rails_)?admin)|(^pages$)/ NO AUTHORIZATION ON THE PAGES CONTROLLER
   end
 end
