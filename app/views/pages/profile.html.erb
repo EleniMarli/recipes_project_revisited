@@ -9,4 +9,6 @@
   <% end %>
 </ul>
 
-<%= link_to "Add new recipe", new_recipe_path%>
+<%= link_to new_recipe_path do%>
+   <%= image_tag ("add.svg"), class: "small-button"%>
+<% end %>
