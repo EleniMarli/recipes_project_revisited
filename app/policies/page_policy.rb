@@ -9,4 +9,12 @@ class PagePolicy < ApplicationPolicy
   def home?
     true
   end
+
+  def about_us?
+    true
+  end
+
+  def profile?
+    true
+  end
 end
