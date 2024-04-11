@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   get '/profile', to: 'pages#profile'
   get '/about_us', to: 'pages#about_us'
 
-  resources :recipes, only: %i[new create show edit update]
+  resources :recipes, only: %i[new create show edit update destroy]
 end

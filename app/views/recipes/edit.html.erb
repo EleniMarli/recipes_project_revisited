@@ -1,14 +1,11 @@
-<h1>edit me</h1>
-
+<h1>Edit me</h1>
 
 <%= simple_form_for @recipe, html: { autocomplete: "off" } do |f| %>
   <%= f.input :name, input_html: { autocomplete: "off" } %>
   <%= f.input :portions, :collection => 1..100 %>
   <%= f.input :time_in_min, :collection => 1..5000, :label => 'Preparation time in minutes'%>
   <%= f.input :difficulty, collection: ['easy', 'medium', 'difficult'] %>
-   <%= f.input :public, as: :boolean, :label => 'Visible to other users'  %>
-
-
+  <%= f.input :public, as: :boolean, :label => 'Visible to other users'  %>
   <%= f.input :instructions, input_html: { autocomplete: "off" } %>
   <%= f.submit "Save", class: "btn btn-primary" %>
 <% end %>

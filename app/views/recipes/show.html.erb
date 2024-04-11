@@ -3,9 +3,14 @@
 <p> Preparation time: <%= @recipe.time_in_min %> minutes </p>
 <p> Difficulty: <%= @recipe.difficulty %> </p>
 <p> Rating: <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
+<p> Ingredients: </p>
 <p> Instructions: </p>
 <p><%= simple_format(@recipe.instructions) %></p>
 
 <% if policy(@recipe).edit? %>
   <%= link_to 'Edit', edit_recipe_path(@recipe) %>
+<% end %>
+
+<% if policy(@recipe).destroy? %>
+  <%= link_to 'Delete', recipe_path(@recipe), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %>
 <% end %>
