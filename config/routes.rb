@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   get '/profile', to: 'pages#profile'
+  get '/about_us', to: 'pages#about_us'
 
   resources :recipes, only: %i[new create show edit update]
 end
