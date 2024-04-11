@@ -10,4 +10,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  get '/profile', to: 'pages#profile'
+  get '/about_us', to: 'pages#about_us'
+
+  resources :recipes, only: %i[new create show edit update destroy]
 end

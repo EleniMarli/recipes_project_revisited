@@ -1,0 +1,14 @@
+<h1>This is the user profile</h1>
+
+<h3>Here are the recipes of <%= current_user.name %>:</h3>
+<ul>
+  <% @user_recipes.each do |recipe| %>
+    <li>
+      <%= link_to recipe.name, recipe_path(recipe) %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to new_recipe_path do%>
+   <%= image_tag ("add.svg"), class: "small-button"%>
+<% end %>
