@@ -4,7 +4,7 @@ class PagesController < ApplicationController
 
   def home
     authorize :page, :home?
-    @all_recipes = Recipe.all
+    @all_recipes = Recipe.where(public: true)
                          .order(name: :asc)
     # redirect_to :profile unless current_user.nil?
   end

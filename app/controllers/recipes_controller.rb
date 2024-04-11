@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[show edit]
+  before_action :set_recipe, only: %i[show edit update]
 
   # def index
   #   @recipes = Recipe.all
@@ -31,6 +31,7 @@ class RecipesController < ApplicationController
   end
 
   def update
+    authorize(@recipe)
     if @recipe.update(recipe_params)
       redirect_to recipe_path, notice: "Recipe updated succesfully"
     else
@@ -45,6 +46,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :portions, :instructions, :time_in_min, :difficulty)
+    params.require(:recipe).permit(:name, :portions, :instructions, :time_in_min, :difficulty, :public)
   end
 end

@@ -19,7 +19,7 @@ class RecipePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    record.user == user || record.public == true
   end
 
   def edit?
