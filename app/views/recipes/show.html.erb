@@ -2,12 +2,8 @@
 
 <p> Preparation time: <%= @recipe.time_in_min %> minutes </p>
 <p> Difficulty: <%= @recipe.difficulty %> </p>
-<p> Rating:
-  <% if @recipe.rating == nil %>
-    <%= 'no users have rated it yet' %>
-  <% else %>
-    <%= @recipe.rating %> / 5
-  <% end %>
-</p>
+<p> Rating: <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
 <p> Instructions: </p>
 <p><%= simple_format(@recipe.instructions) %></p>
+
+<%= link_to 'Edit', edit_recipe_path(@recipe) %>
