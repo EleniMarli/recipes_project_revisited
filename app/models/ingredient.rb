@@ -53,6 +53,6 @@ class Ingredient < ApplicationRecord
     "tsp",
     "tbsp",
     "ml",
-    "L"
+    "l"
   ]
 end
