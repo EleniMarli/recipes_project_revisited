@@ -1,6 +1,7 @@
 class Ingredient < ApplicationRecord
   belongs_to :recipe
-  belongs_to :shopping_list
+  has_many :shopping_list_ingredients
+  has_many :shopping_lists, through: :shopping_list_ingredients
 
   METRIC_UNITS = [
     # Singular forms

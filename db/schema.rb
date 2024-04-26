@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_18_120227) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_26_102606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_120227) do
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
+  create_table "shopping_list_ingredients", force: :cascade do |t|
+    t.bigint "shopping_list_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ingredient_id"], name: "index_shopping_list_ingredients_on_ingredient_id"
+    t.index ["shopping_list_id"], name: "index_shopping_list_ingredients_on_shopping_list_id"
+  end
+
   create_table "shopping_lists", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id", null: false
@@ -65,5 +74,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_120227) do
   add_foreign_key "ingredients", "recipes"
   add_foreign_key "ingredients", "shopping_lists"
   add_foreign_key "recipes", "users"
+  add_foreign_key "shopping_list_ingredients", "ingredients"
+  add_foreign_key "shopping_list_ingredients", "shopping_lists"
   add_foreign_key "shopping_lists", "users"
 end
