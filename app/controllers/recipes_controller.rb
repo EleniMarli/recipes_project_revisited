@@ -16,7 +16,32 @@ class RecipesController < ApplicationController
     authorize(@recipe)
 
     if @recipe.save
-      redirect_to profile_path, notice: "Recipe saved succesfully"
+
+
+      @recipe.list_of_ingredients.split("\n").reject{ |str| str == "" }.map(&:strip).each do |str|
+        ingredient = Ingredient.new
+        # START WITH NUM
+
+        # LOOK FOR COMMA
+        num_str_comma = str.scan(/\d+,\d+/)
+
+
+        str.gsub(/\d+,\d+/) { |match| match.gsub(',', '.') }
+
+        amount = str.scan(/[-+]?\d*\.?\d+/).first
+        amount = amount.to_f unless amount.nil?
+
+        # THEN METRIC UNIT
+        metric_unit = METRIC_UNITS.find { |word| str.include?(word) }
+        # metric_unit = "unit(s)" if metric_unit.nil?
+
+        # REST IS NAME
+
+      end
+
+
+
+      redirect_to recipe_path(@recipe), notice: "Recipe saved succesfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -52,6 +77,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :portions, :instructions, :time_in_min, :difficulty, :public)
+    params.require(:recipe).permit(:name, :portions, :instructions, :list_of_ingredients, :time_in_min, :difficulty, :public)
   end
 end
