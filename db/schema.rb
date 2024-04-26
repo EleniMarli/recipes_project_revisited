@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_26_102606) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_26_103423) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,11 +19,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_102606) do
     t.float "amount"
     t.string "metric_unit"
     t.bigint "recipe_id"
-    t.bigint "shopping_list_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
-    t.index ["shopping_list_id"], name: "index_ingredients_on_shopping_list_id"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -72,7 +70,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_102606) do
   end
 
   add_foreign_key "ingredients", "recipes"
-  add_foreign_key "ingredients", "shopping_lists"
   add_foreign_key "recipes", "users"
   add_foreign_key "shopping_list_ingredients", "ingredients"
   add_foreign_key "shopping_list_ingredients", "shopping_lists"
