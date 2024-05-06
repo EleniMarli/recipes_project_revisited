@@ -27,7 +27,7 @@ recipe1 = Recipe.create(
   difficulty: "easy",
   user: user1,
   public: true,
-  list_of_ingredients: "2 eggs\nSalt to taste\nPepper to taste\n1 tablespoon butter or oil\nOptional: chopped chives, grated cheese"
+  list_of_ingredients: "2.0 eggs\nSalt to taste\nPepper to taste\n1.0 tablespoon butter or oil\nOptional: chopped chives, grated cheese"
 )
 
 Ingredient.create(
@@ -73,7 +73,7 @@ recipe2 = Recipe.create(
   difficulty: "medium",
   user: user1,
   public: false,
-  list_of_ingredients: "2 large tomatoes\n0.5 red onion\nHandful of fresh basil leaves\n2 tablespoons olive oil\nSalt and pepper to taste\n0.25 cup crumbled feta cheese (optional)"
+  list_of_ingredients: "2.0 large tomatoes\n0.5 red onion\nHandful of fresh basil leaves\n2.0 tablespoons olive oil\nSalt and pepper to taste\n0.25 cup crumbled feta cheese (optional)"
 )
 
 Ingredient.create(
@@ -134,7 +134,7 @@ recipe3 = Recipe.create(
   difficulty: "easy",
   user: user2,
   public: false,
-  list_of_ingredients: "1 ripe banana\n0.5 cup milk\n0.5 cup yogurt\n1 tablespoon honey\nHandful of ice cubes"
+  list_of_ingredients: "1.0 ripe banana\n0.5 cup milk\n0.5 cup yogurt\n1.0 tablespoon honey\nHandful of ice cubes"
 )
 
 Ingredient.create(
@@ -180,7 +180,7 @@ recipe4 = Recipe.create(
   difficulty: "difficult",
   user: user2,
   public: true,
-  list_of_ingredients: "200 g pasta (spaghetti, penne, or your choice)\n2 tablespoons olive oil\n2 cloves garlic, minced\nSalt and pepper to taste\nPinch of red pepper flakes (optional)\nGrated Parmesan cheese and chopped parsley for garnish (optional)"
+  list_of_ingredients: "200.0 g pasta (spaghetti, penne, or your choice)\n2.0 tablespoons olive oil\n2.0 cloves garlic, minced\nSalt and pepper to taste\nPinch of red pepper flakes (optional)\nGrated Parmesan cheese and chopped parsley for garnish (optional)"
 )
 
 Ingredient.create(
