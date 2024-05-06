@@ -15,6 +15,44 @@ class RecipesController < ApplicationController
     @recipe.user = current_user
     authorize(@recipe)
 
+    ingr_instances_list = []
+    @recipe.list_of_ingredients.split("\n").reject { |str| str == "" }.map(&:strip).each do |str|
+      ingredient = Ingredient.str_to_ingr(str)
+      ingr_instances_list << ingredient if ingredient.valid?
+      if !ingredient.valid?
+        flash.now[:notice] = "One of the ingredients is not valid. Use a more standardised format (e.g. '400 gr pasta')"
+        render :new, status: :unprocessable_entity
+        return
+      end
+    end
+
+    if @recipe.save
+      ingr_instances_list.each do |ingr|
+        ingr.recipe_id = @recipe.id
+        ingr.save
+      end
+      @recipe.beautify_list_of_ingredients
+      redirect_to recipe_path(@recipe), notice: "Recipe saved succesfully"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    authorize(@recipe)
+  end
+
+  def edit
+    authorize(@recipe)
+  end
+
+  def update
+    authorize(@recipe)
+    if @recipe.update(recipe_params)
+      @recipe.ingredients.delete_all
+
+      # .assign_attributes( params[:obj] )
+
       ingr_instances_list = []
       @recipe.list_of_ingredients.split("\n").reject{ |str| str == "" }.map(&:strip).each do |str|
 
@@ -49,29 +87,8 @@ class RecipesController < ApplicationController
         end
       end
 
-      if @recipe.save
-        ingr_instances_list.each do |ingr|
-          ingr.recipe_id = @recipe.id
-          ingr.save
-        end
-        format_list_of_ingredients(@recipe)
-        redirect_to recipe_path(@recipe), notice: "Recipe saved succesfully"
-      else
-        render :new, status: :unprocessable_entity
-      end
-  end
 
-  def show
-    authorize(@recipe)
-  end
 
-  def edit
-    authorize(@recipe)
-  end
-
-  def update
-    authorize(@recipe)
-    if @recipe.update(recipe_params)
       redirect_to recipe_path, notice: "Recipe updated succesfully"
     else
       render :edit, status: :unprocessable_entity
@@ -85,19 +102,6 @@ class RecipesController < ApplicationController
   end
 
   private
-
-  def format_list_of_ingredients(recipe)
-    new_list_of_ingredients = recipe.ingredients.map do |ingr|
-      if ingr.amount && ingr.metric_unit
-        "#{ingr.amount} #{ingr.metric_unit} #{ingr.name}"
-      elsif ingr.amount
-        "#{ingr.amount} #{ingr.name}"
-      else
-        ingr.name.to_s
-      end
-    end.join("\n")
-    recipe.update(list_of_ingredients: new_list_of_ingredients)
-  end
 
   def set_recipe
     @recipe = Recipe.find(params[:id])

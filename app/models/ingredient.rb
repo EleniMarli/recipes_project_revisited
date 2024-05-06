@@ -58,4 +58,25 @@ class Ingredient < ApplicationRecord
       "l"
     ]
   end
+
+  def self.str_to_ingr(str)
+    # AMOUNT
+    str.gsub(/\d+,\d+/) { |match| match.gsub(',', '.') }
+    amount = str.scan(/[-+]?\d*\.?\d+/).first
+    unless amount.nil?
+      str.gsub!(amount, " ")
+      amount = amount.to_f
+    end
+
+    # METRIC UNIT
+    metric_unit = Ingredient.metric_units.find { |word| str.match?(/\b#{word.downcase}\b/i) }
+    unless metric_unit.nil?
+      str.gsub!(/\b#{metric_unit.downcase}\b/i, "")
+      metric_unit.downcase!
+    end
+
+    # NAME
+    name = str.gsub(/\s+/, " ").strip
+    Ingredient.new(name: name, amount: amount, metric_unit: metric_unit, recipe_id: nil)
+  end
 end
