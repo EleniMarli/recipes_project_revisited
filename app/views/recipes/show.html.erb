@@ -1,12 +1,29 @@
-<h3> <%= @recipe.name %> (<%= @recipe.portions %> portions) </h3>
+<div class="name-box">
+  <h3> <%= @recipe.name %> (<%= @recipe.portions %> portions) </h3>
+</div>
 
-<p class="fw-bold"> Preparation time: </p> <p><%= @recipe.time_in_min %> minutes </p>
-<p class="fw-bold"> Difficulty: </p> <p> <%= @recipe.difficulty %> </p>
-<p class="fw-bold"> Rating: </p> <p> <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
-<p class="fw-bold"> Ingredients: </p>
-<p><%= simple_format(@recipe.list_of_ingredients) %></p>
-<p class="fw-bold"> Instructions: </p>
-<p><%= simple_format(@recipe.instructions) %></p>
+<div class="helper">
+  <div class="oneline-box">
+    <div class="show-box">
+      <p class="fw-bold"> Preparation time: </p> <p><%= @recipe.time_in_min %> minutes </p>
+    </div>
+    <div class="show-box">
+      <p class="fw-bold"> Difficulty: </p> <p> <%= @recipe.difficulty %> </p>
+    </div>
+    <div class="show-box">
+      <p class="fw-bold"> Rating: </p> <p> <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
+    </div>
+  </div>
+</div>
+
+  <div class="show-box external">
+    <p class="fw-bold"> Ingredients: </p>
+    <p><%= simple_format(@recipe.list_of_ingredients) %></p>
+  </div>
+  <div class="show-box external">
+    <p class="fw-bold"> Instructions: </p>
+    <p><%= simple_format(@recipe.instructions) %></p>
+  </div>
 
 <% if policy(@recipe).edit? %>
   <%= link_to 'Edit', edit_recipe_path(@recipe) %>
