@@ -48,48 +48,33 @@ class RecipesController < ApplicationController
 
   def update
     authorize(@recipe)
-    if @recipe.update(recipe_params)
-      @recipe.ingredients.delete_all
 
-      # .assign_attributes( params[:obj] )
+    ingr_instances_list = []
+    recipe_params[:list_of_ingredients].split("\n").reject { |str| str == "" }.map(&:strip).each do |str|
+      ingredient = Ingredient.str_to_ingr(str)
+      ingr_instances_list << ingredient if ingredient.valid?
+      if !ingredient.valid?
+        flash.now[:notice] = "One of the ingredients is not valid. Use a more standardised format (e.g. '400 gr pasta')"
+        render :edit, status: :unprocessable_entity
+        return
+      end
+    end
 
-      ingr_instances_list = []
-      @recipe.list_of_ingredients.split("\n").reject{ |str| str == "" }.map(&:strip).each do |str|
+    @recipe.assign_attributes(recipe_params)
 
-        # START WITH AMOUNT
-        str.gsub(/\d+,\d+/) { |match| match.gsub(',', '.') }
+    if @recipe.valid?
+      @recipe.update(recipe_params)
+      # OLD INGREDIENTS
+      @recipe.ingredients.destroy_all
 
-        amount = str.scan(/[-+]?\d*\.?\d+/).first
-        unless amount.nil?
-          str.gsub!(amount, " ")
-          amount = amount.to_f
-        end
-
-        # THEN METRIC UNIT
-        metric_unit = Ingredient.metric_units.find { |word| str.match?(/\b#{word.downcase}\b/i) }
-
-        #"250g penne pasta\n400 gr canned diced tomatoes\n1 onion, finely chopped\n2 cloves garlic, minced\n200 oz spinach leaves\n100 mL feta cheese, crumbled\n2 liter olive oil\n1 bunch dried oregano\nsalt and pepper to taste"
-
-        unless metric_unit.nil?
-          str.gsub!(/\b#{metric_unit.downcase}\b/i, "")
-          metric_unit.downcase!
-        end
-
-        # REST IS NAME
-        name = str.gsub(/\s+/, " ").strip
-
-        ingredient = Ingredient.new(name: name, amount: amount, metric_unit: metric_unit, recipe_id: nil)
-        ingr_instances_list << ingredient if ingredient.valid?
-        if !ingredient.valid?
-          flash.now[:notice] = "One of the ingredients is not valid. Use a more standardised format (e.g. '400 gr pasta')"
-          render :new, status: :unprocessable_entity
-          return
-        end
+      # NEW INGREDIENTS
+      ingr_instances_list.each do |ingr|
+        ingr.recipe_id = @recipe.id
+        ingr.save
       end
 
-
-
-      redirect_to recipe_path, notice: "Recipe updated succesfully"
+      @recipe.beautify_list_of_ingredients
+      redirect_to recipe_path(@recipe), notice: "Recipe updated succesfully"
     else
       render :edit, status: :unprocessable_entity
     end
