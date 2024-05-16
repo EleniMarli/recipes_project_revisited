@@ -15,8 +15,24 @@ class RecipesController < ApplicationController
     @recipe.user = current_user
     authorize(@recipe)
 
+    ingr_instances_list = []
+    @recipe.list_of_ingredients.split("\n").reject { |str| str == "" }.map(&:strip).each do |str|
+      ingredient = Ingredient.str_to_ingr(str)
+      ingr_instances_list << ingredient if ingredient.valid?
+      if !ingredient.valid?
+        flash.now[:notice] = "One of the ingredients is not valid. Use a more standardised format (e.g. '400 gr pasta')"
+        render :new, status: :unprocessable_entity
+        return
+      end
+    end
+
     if @recipe.save
-      redirect_to profile_path, notice: "Recipe saved succesfully"
+      ingr_instances_list.each do |ingr|
+        ingr.recipe_id = @recipe.id
+        ingr.save
+      end
+      @recipe.beautify_list_of_ingredients
+      redirect_to recipe_path(@recipe), notice: "Recipe saved succesfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -32,8 +48,33 @@ class RecipesController < ApplicationController
 
   def update
     authorize(@recipe)
-    if @recipe.update(recipe_params)
-      redirect_to recipe_path, notice: "Recipe updated succesfully"
+
+    ingr_instances_list = []
+    recipe_params[:list_of_ingredients].split("\n").reject { |str| str == "" }.map(&:strip).each do |str|
+      ingredient = Ingredient.str_to_ingr(str)
+      ingr_instances_list << ingredient if ingredient.valid?
+      if !ingredient.valid?
+        flash.now[:notice] = "One of the ingredients is not valid. Use a more standardised format (e.g. '400 gr pasta')"
+        render :edit, status: :unprocessable_entity
+        return
+      end
+    end
+
+    @recipe.assign_attributes(recipe_params)
+
+    if @recipe.valid?
+      @recipe.update(recipe_params)
+      # OLD INGREDIENTS
+      @recipe.ingredients.destroy_all
+
+      # NEW INGREDIENTS
+      ingr_instances_list.each do |ingr|
+        ingr.recipe_id = @recipe.id
+        ingr.save
+      end
+
+      @recipe.beautify_list_of_ingredients
+      redirect_to recipe_path(@recipe), notice: "Recipe updated succesfully"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -52,6 +93,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :portions, :instructions, :time_in_min, :difficulty, :public)
+    params.require(:recipe).permit(:name, :portions, :instructions, :list_of_ingredients, :time_in_min, :difficulty, :public)
   end
 end

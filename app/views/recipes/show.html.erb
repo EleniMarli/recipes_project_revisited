@@ -1,10 +1,11 @@
 <h3> <%= @recipe.name %> (<%= @recipe.portions %> portions) </h3>
 
-<p> Preparation time: <%= @recipe.time_in_min %> minutes </p>
-<p> Difficulty: <%= @recipe.difficulty %> </p>
-<p> Rating: <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
-<p> Ingredients: </p>
-<p> Instructions: </p>
+<p class="fw-bold"> Preparation time: </p> <p><%= @recipe.time_in_min %> minutes </p>
+<p class="fw-bold"> Difficulty: </p> <p> <%= @recipe.difficulty %> </p>
+<p class="fw-bold"> Rating: </p> <p> <%= @recipe.rating ? "#{@recipe.rating} / 5" : 'no users have rated it yet'%> </p>
+<p class="fw-bold"> Ingredients: </p>
+<p><%= simple_format(@recipe.list_of_ingredients) %></p>
+<p class="fw-bold"> Instructions: </p>
 <p><%= simple_format(@recipe.instructions) %></p>
 
 <% if policy(@recipe).edit? %>

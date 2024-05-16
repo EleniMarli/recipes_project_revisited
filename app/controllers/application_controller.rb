@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)/
     # origonally regexp was: /(^(rails_)?admin)|(^pages$)/ NO AUTHORIZATION ON THE PAGES CONTROLLER
+  end
 
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb

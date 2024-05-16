@@ -5,7 +5,8 @@
   <%= f.input :portions, :collection => 1..100 %>
   <%= f.input :time_in_min, :collection => 1..5000, :label => 'Preparation time in minutes'%>
   <%= f.input :difficulty, collection: ['easy', 'medium', 'difficult'] %>
-  <%= f.input :public, as: :boolean, :label => 'Visible to other users'  %>
   <%= f.input :instructions, input_html: { autocomplete: "off" } %>
+  <%= f.input :list_of_ingredients, input_html: { autocomplete: "off" } %>
+  <%= f.input :public, as: :boolean, :label => 'Recipe visible to other users'  %>
   <%= f.submit "Save", class: "btn btn-primary" %>
 <% end %>

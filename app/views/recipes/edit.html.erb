@@ -7,5 +7,6 @@
   <%= f.input :difficulty, collection: ['easy', 'medium', 'difficult'] %>
   <%= f.input :public, as: :boolean, :label => 'Visible to other users'  %>
   <%= f.input :instructions, input_html: { autocomplete: "off" } %>
+  <%= f.input :list_of_ingredients, input_html: { autocomplete: "off" } %>
   <%= f.submit "Save", class: "btn btn-primary" %>
 <% end %>
