@@ -40,6 +40,16 @@ class RecipesController < ApplicationController
 
   def show
     authorize(@recipe)
+    if params["changed_portions"] == nil || params["changed_portions"].to_i == @recipe.portions
+      @appearing_portions = @recipe.portions
+      @ingredients = @recipe.ingredients.map(&:to_str)
+    else
+      @appearing_portions = params["changed_portions"].to_i
+      @ingredients = @recipe.ingredients.map do |ingr|
+        ingr.amount = (ingr.amount / @recipe.portions) * @appearing_portions if ingr.amount
+        ingr.to_str
+      end
+    end
   end
 
   def edit
