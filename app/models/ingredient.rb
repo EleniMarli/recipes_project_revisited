@@ -79,4 +79,14 @@ class Ingredient < ApplicationRecord
     name = str.gsub(/\s+/, " ").strip
     Ingredient.new(name: name, amount: amount, metric_unit: metric_unit, recipe_id: nil)
   end
+
+  def to_str
+    if self.amount && self.metric_unit
+      return "#{self.amount} #{self.metric_unit} #{self.name}"
+    elsif self.amount
+      return "#{self.amount} #{self.name}"
+    else
+      return self.name
+    end
+  end
 end
