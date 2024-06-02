@@ -9,13 +9,7 @@ class Recipe < ApplicationRecord
 
   def beautify_list_of_ingredients
     new_list_of_ingredients = self.ingredients.map do |ingr|
-      if ingr.amount && ingr.metric_unit
-        "#{ingr.amount} #{ingr.metric_unit} #{ingr.name}"
-      elsif ingr.amount
-        "#{ingr.amount} #{ingr.name}"
-      else
-        ingr.name.to_s
-      end
+      ingr.to_str
     end.join("\n")
     self.update(list_of_ingredients: new_list_of_ingredients)
   end
